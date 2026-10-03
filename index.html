@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>StudySwap | Pass it on. Pick it up.</title>
+<meta name="description" content="StudySwap is the school marketplace for uniforms, books and shoes. Buy, swap or donate what your child has outgrown and pick it up at school.">
+<style>
+:root{--bg:#fff7e8;--card:#fff;--tx:#23302a;--mu:#7a7f74;--pr:#10a36b;--pr2:#dff6ea;--bd:#f0e2c6;--am:#c26a00;--am2:#ffe9b8;--bl:#3b5bdb;--bl2:#e0e7ff;--pk:#ff5c8a;--sh:rgba(0,0,0,.14);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a17;--card:#1e2822;--tx:#eef5f0;--mu:#9aa89f;--pr:#3fd49a;--pr2:#1a3d2c;--bd:#2c3a32;--am:#ffc25a;--am2:#3d3013;--bl:#9db1ff;--bl2:#222a52;--sh:rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg:#141a17;--card:#1e2822;--tx:#eef5f0;--mu:#9aa89f;--pr:#3fd49a;--pr2:#1a3d2c;--bd:#2c3a32;--am:#ffc25a;--am2:#3d3013;--bl:#9db1ff;--bl2:#222a52;--sh:rgba(0,0,0,.4)}
+*{box-sizing:border-box}html,body{margin:0}html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--bg);color:var(--tx);font:15px/1.4 "Fredoka","Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:500}
+#app{height:100%;display:flex;flex-direction:column}
+#app header{padding:16px 16px 18px;background:linear-gradient(135deg,#0d8f5c,#22c997 60%,#7be0b5);color:#fff;border-radius:0 0 28px 28px;box-shadow:0 6px 0 var(--sh);position:relative;z-index:2}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#app h1{font-size:26px;margin:0;color:#fff;letter-spacing:-.5px}
+#app h1 span{display:inline-block;animation:wig 3s ease-in-out infinite}
+.sl{font-size:13px;opacity:.92}
+select,input,textarea{font:inherit;color:var(--tx);background:var(--card);border:2px solid var(--bd);border-radius:14px;padding:10px 12px;width:100%;outline:0}
+select:focus,input:focus{border-color:var(--pr)}
+#app header select,#app header input{border-color:transparent;color:#23302a;background:#fff}
+select.sch{width:auto;max-width:50%;font-weight:600}
+.tg{flex-shrink:0;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:#0d8f5c;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.tg:active{transform:translateY(3px);box-shadow:none}
+#app main{flex:1;min-height:0;overflow-y:auto;padding:6px 16px 18px}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:10px 0 6px;scrollbar-width:none}
+.chip{white-space:nowrap;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:99px;padding:6px 13px;font:inherit;font-size:14px;cursor:pointer;box-shadow:0 3px 0 var(--bd);transition:transform .12s}
+.chip:active{transform:translateY(3px);box-shadow:none}
+.chip.on{background:var(--pr);color:#fff;border-color:var(--pr);box-shadow:0 3px 0 rgba(0,0,0,.2);transform:scale(1.05)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-top:8px}
+.card{background:var(--card);border:2px solid var(--bd);border-radius:22px;padding:10px;cursor:pointer;box-shadow:0 5px 0 var(--bd);animation:pop .4s backwards;transition:transform .15s,box-shadow .15s}
+.card:nth-child(odd){transform:rotate(-1.2deg)}.card:nth-child(even){transform:rotate(1.2deg)}
+.card:nth-child(2){animation-delay:.05s}.card:nth-child(3){animation-delay:.1s}.card:nth-child(4){animation-delay:.15s}
+.card:active{transform:translateY(4px) rotate(0);box-shadow:0 1px 0 var(--bd)}
+.em{font-size:42px;text-align:center;background:var(--pr2);border-radius:16px;padding:14px 0;margin-bottom:8px}
+.card:hover .em>i{animation:wig .5s}
+.em i{display:inline-block;font-style:normal}
+[data-c=Uniforms] .em{background:rgba(91,124,250,.22)}[data-c=Books] .em{background:rgba(255,92,138,.2)}[data-c=Shoes] .em{background:rgba(255,183,3,.28)}[data-c=Stationery] .em{background:rgba(16,163,107,.22)}[data-c=Sports] .em{background:rgba(155,93,229,.24)}
+.card b{display:block;font-size:14px;line-height:1.2;font-weight:600}.mu{color:var(--mu);font-size:12px}
+.price{margin-top:6px}
+.tag{display:inline-block;font-size:12px;padding:3px 10px;border-radius:99px;font-weight:600}
+.t-sell{background:var(--pr2);color:var(--pr)}.t-swap{background:var(--bl2);color:var(--bl)}.t-donate{background:var(--am2);color:var(--am)}
+#nav{flex-shrink:0;display:flex;gap:4px;padding:8px 8px 10px;background:var(--card);border-radius:24px 24px 0 0;box-shadow:0 -4px 0 var(--bd)}
+#nav button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;border:0;background:none;color:var(--mu);font:inherit;font-size:12px;line-height:1.1;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#nav button span{display:block;font-size:22px;line-height:1.2;padding:3px 0;width:56px;text-align:center;border-radius:99px;transition:.2s}
+#nav button.on{color:var(--pr);font-weight:700}
+#nav button.on span{background:var(--pr2);animation:bounce .5s}
+.btn{width:100%;border:0;border-radius:16px;background:linear-gradient(135deg,#0d8f5c,#22c997);color:#fff;font:inherit;font-weight:600;font-size:16px;padding:14px;cursor:pointer;margin-top:12px;box-shadow:0 5px 0 rgba(0,0,0,.22);transition:transform .1s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.22)}
+.btn.alt{background:var(--pr2);color:var(--pr);box-shadow:0 5px 0 var(--bd)}
+label{display:block;font-size:13px;color:var(--mu);margin:12px 0 4px;font-weight:600}
+.row{display:flex;gap:8px}
+.sheet{position:fixed;inset:0;background:rgba(20,30,25,.55);display:none;align-items:flex-end;justify-content:center;z-index:9}
+.sheet.show{display:flex}
+.panel{background:var(--bg);width:100%;max-width:520px;border-radius:28px 28px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));max-height:90%;overflow-y:auto;animation:up .3s cubic-bezier(.2,1.2,.4,1)}
+.sum{background:var(--card);border:2px dashed var(--bd);border-radius:16px;padding:10px 12px;margin-top:10px}
+.sum div{display:flex;justify-content:space-between;padding:2px 0}
+.ok{color:var(--pr);font-weight:700}
+.empty{text-align:center;color:var(--mu);padding:40px 0}.empty i{display:block;font-size:56px;font-style:normal;animation:bounce 1.6s infinite}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0}
+.stats div{border-radius:18px;padding:10px 6px;text-align:center;box-shadow:0 4px 0 var(--sh)}
+.stats div:nth-child(1){background:var(--pr2)}.stats div:nth-child(2){background:var(--bl2)}.stats div:nth-child(3){background:var(--am2)}
+.stats b{font-size:18px;display:block}
+.big{text-align:center;padding:16px 0}.big i{display:block;font-size:64px;font-style:normal;animation:bounce .8s 2}
+.cf{position:fixed;top:-16px;width:9px;height:14px;border-radius:2px;z-index:99;pointer-events:none;animation:fall 1.9s ease-in forwards}
+.msgs{height:40vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:12px 2px}
+.b{max-width:80%;padding:8px 13px;border-radius:18px;animation:pop .25s}
+.b.me{align-self:flex-end;background:var(--pr);color:#fff;border-bottom-right-radius:4px}
+.b.them{align-self:flex-start;background:var(--card);border:2px solid var(--bd);border-bottom-left-radius:4px}
+.th{display:flex;gap:10px;align-items:center;justify-content:flex-start}.th div{display:block;padding:0}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:99px;z-index:99;max-width:90%;text-align:center;font-weight:600;animation:pop .3s}
+.ic{width:1em;height:1em;vertical-align:-.15em;flex-shrink:0}.v{color:var(--pr)}
+.chip .ic{vertical-align:-.17em}h1 .ic{width:.9em;height:.9em}
+.em{color:var(--pr)}.em .ic{stroke-width:1.5}
+[data-c=Uniforms] .em{color:#4c6ef5}[data-c=Books] .em{color:#f0457a}[data-c=Shoes] .em{color:#e08a00}[data-c=Stationery] .em{color:#0f9a64}[data-c=Sports] .em{color:#8a4fe0}
+.empty i{color:var(--mu)}.empty .ic{stroke-width:1.5}.big i{color:var(--pr)}.big .ic{stroke-width:1.5}
+.sw{position:relative;margin-top:10px}.si{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#6b7a70;display:flex;font-size:18px}
+.sw input{padding-left:40px}
+.chk{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;color:var(--tx);font-weight:600}.chk input{width:auto;accent-color:var(--pr)}
+.card.ft{border-color:var(--am)}.t-feat{background:var(--am2);color:var(--am)}
+.bundle{background:var(--card);border:2px dashed var(--pr);border-radius:20px;padding:12px;margin:12px 0 2px}
+.bt{font-weight:700;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.bt .ic{color:var(--pr)}.price s{font-weight:500;font-size:13px}
+.plus{background:var(--am2);border:2px solid var(--am);border-radius:20px;padding:12px;margin:10px 0}.plus .bt .ic{color:var(--am)}.plus ul{margin:8px 0 0;padding-left:18px}.pl{color:var(--am)}
+@keyframes pop{from{opacity:0;scale:.8}}@keyframes up{from{transform:translateY(60%)}}
+@keyframes bounce{40%{transform:translateY(-8px) scale(1.1)}}
+@keyframes wig{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes fall{to{top:105vh;margin-left:50px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.sn{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px solid var(--bd)}
+.sn .wrap{display:flex;align-items:center;gap:20px;height:66px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:22px;color:var(--pr);text-decoration:none;letter-spacing:-.4px}
+.sn a.l{color:var(--tx);text-decoration:none;font-weight:600;font-size:15px}.sn a.l:hover{color:var(--pr)}
+.sp{flex:1}
+.sn .tg{background:var(--card);color:var(--pr);border:2px solid var(--bd);box-shadow:0 3px 0 var(--bd);width:42px;height:42px}
+.cta{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:16px;background:linear-gradient(135deg,#0d8f5c,#22c997);color:#fff;font:inherit;font-weight:600;font-size:16px;padding:12px 22px;cursor:pointer;text-decoration:none;box-shadow:0 5px 0 rgba(0,0,0,.22);transition:transform .1s}
+.cta:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.22)}
+.cta.alt{background:var(--card);color:var(--pr);border:2px solid var(--bd);box-shadow:0 5px 0 var(--bd)}
+.hero{padding:44px 0 64px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+.eyebrow{display:inline-block;background:var(--pr2);color:var(--pr);font-weight:600;font-size:13px;padding:5px 12px;border-radius:99px;margin-bottom:16px}
+.hero h1{font-size:clamp(42px,6.2vw,70px);line-height:1.02;margin:0 0 18px;letter-spacing:-1.5px}
+.hero h1 em{font-style:normal;color:var(--pr);display:block}
+.lead{font-size:18px;color:var(--mu);max-width:520px;margin:0 0 26px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.phone{width:380px;max-width:100%;height:min(740px,88dvh);margin:0 auto;border:10px solid #101512;border-radius:46px;overflow:hidden;transform:translateZ(0);position:relative;background:var(--bg);box-shadow:0 18px 0 var(--sh)}
+.cap{text-align:center;color:var(--mu);font-size:13px;margin-top:26px}
+.band{background:var(--pr2);padding:54px 0}
+.band p.big3{font-size:clamp(28px,5vw,46px);font-weight:600;line-height:1.15;margin:0;letter-spacing:-.8px}
+.band p.big3 span{color:var(--am)}
+.band .lead{margin:18px 0 0;color:var(--tx);opacity:.8}
+.sec{padding:64px 0}
+.sec h2{font-size:clamp(28px,4vw,40px);margin:0 0 8px;letter-spacing:-.8px;line-height:1.1}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:30px}
+.step{background:var(--card);border:2px solid var(--bd);border-radius:22px;padding:18px;box-shadow:0 5px 0 var(--bd)}
+.step:nth-child(odd){transform:rotate(-1deg)}.step:nth-child(even){transform:rotate(1deg)}
+.step i{font-style:normal;font-size:34px;font-weight:600;color:var(--am);display:block;line-height:1}
+.step b{display:block;font-size:19px;margin:10px 0 4px}.step p{margin:0;color:var(--mu);font-size:14.5px}
+.why{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.why h2{font-size:clamp(34px,5vw,52px)}.why h2 span{color:var(--am);display:block}
+.why ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:12px}
+.why li b{color:var(--pr)}
+.rcpt{font-family:"Courier New",monospace;background:var(--card);border:2px solid var(--bd);border-radius:12px;padding:24px 22px;max-width:340px;margin:0 auto;box-shadow:0 8px 0 var(--bd);transform:rotate(1.5deg)}
+.rcpt .rh{text-align:center;font-weight:700;letter-spacing:2px;font-size:17px}
+.rcpt .dash{text-align:center;color:var(--mu);margin:8px 0;overflow:hidden;white-space:nowrap}
+.rcpt .rr{display:flex;justify-content:space-between;padding:5px 0;font-size:15px}.rcpt .rr.b{font-weight:700}
+.rcpt .note{text-align:center;color:var(--mu);font-size:11.5px;margin-top:14px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;margin-top:30px;max-width:780px}
+.plan{background:var(--card);border:2px solid var(--bd);border-radius:24px;padding:22px;box-shadow:0 6px 0 var(--bd);display:flex;flex-direction:column}
+.plan.pl2{border-color:var(--am);background:var(--am2);box-shadow:0 6px 0 var(--am)}
+.plan h3{margin:0;font-size:22px}.plan .pr{font-size:30px;font-weight:600;margin:8px 0 2px}.plan .pr small{font-size:14px;color:var(--mu);font-weight:500}
+.plan ul{list-style:none;padding:0;margin:14px 0 18px;display:grid;gap:9px;flex:1}
+.plan li{display:flex;gap:8px;align-items:flex-start;font-size:15px}.plan li .ic{color:var(--pr);margin-top:3px}
+.pl2 li .ic{color:var(--am)}
+.faq details{background:var(--card);border:2px solid var(--bd);border-radius:18px;padding:14px 18px;margin-top:12px;max-width:760px}
+.faq summary{cursor:pointer;font-weight:600;font-size:17px}.faq details p{margin:10px 0 0;color:var(--mu)}
+.endband{background:var(--pr);color:#fff;border-radius:32px;padding:44px 28px;text-align:center}
+.endband h2{margin:0 0 18px;font-size:clamp(28px,4.5vw,42px);color:#fff}
+.endband .cta{background:#fff;color:#0d8f5c;box-shadow:0 5px 0 rgba(0,0,0,.25)}
+.sf{padding:40px 0 48px;color:var(--mu);font-size:14px}
+.sf .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.hero .wrap>*,.why>*{min-width:0}
+@media(max-width:860px){.hero .wrap,.why{grid-template-columns:minmax(0,1fr)}.hero{padding-top:28px}.sn a.l{display:none}.sec{padding:48px 0}}
+@media(max-width:480px){.phone{border-width:6px;border-radius:34px;height:84dvh}.wrap{padding:0 16px}}
+</style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap"></head><body>
+<nav class="sn"><div class="wrap"><a class="logo" href="#top"><span data-ic="book"></span> StudySwap</a><span class="sp"></span>
+<a class="l" href="#how">How it works</a><a class="l" href="#why">Why it works</a><a class="l" href="#pricing">Pricing</a><a class="l" href="#faq">FAQ</a>
+<button class="tg" id="tg" aria-label="Switch between light and dark mode"></button><a class="cta" href="#try" onclick="goApp();return false">Try it</a></div></nav>
+<section class="hero" id="top"><div class="wrap"><div>
+<span class="eyebrow">For school families</span>
+<h1>Pass it on. <em>Pick it up.</em></h1>
+<p class="lead">StudySwap is the school marketplace for uniforms, books and shoes. Buy, swap or give away what your child has outgrown, and collect it right at the school gate.</p>
+<div class="btns"><a class="cta" href="#try" onclick="goApp();return false">Try the app <span data-ic="arrow"></span></a><a class="cta alt" href="#how">How it works</a></div></div>
+<div id="try"><div class="phone" id="phone"><div id="app">
+<header><div class="top"><div><h1><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span> StudySwap</h1><div class="sl">Pass it on. Pick it up.</div></div>
+<div style="display:flex;gap:8px;align-items:center;min-width:0;max-width:62%"><select class="sch" id="school" aria-label="School" style="max-width:none;min-width:0"></select></div></div>
+<div class="sw"><span class="si" id="si"></span><input id="q" placeholder="Looking for something? Try “blazer” or “maths book”"></div></header>
+<main id="main"></main>
+<nav id="nav"></nav>
+</div>
+<div class="sheet" id="sheet"><div class="panel" id="panel"></div></div>
+</div><div class="cap">This is the real app. Go on, try it.</div></div></div></section>
+<section class="band"><div class="wrap"><p class="big3">Bought new.<br>Outgrown in a year.<br><span>Left in a cupboard.</span></p>
+<p class="lead">A blazer, a maths book, a pair of shoes. Parents pay full price for things that get used for a term or two. Then the curriculum changes and the books are useless.</p></div></section>
+<section class="sec" id="how"><div class="wrap"><h2>How it works</h2><p class="lead" style="margin:0">Four steps, and nobody has to leave the school gate.</p>
+<div class="steps"><div class="step"><i>1</i><b>List it</b><p>Post the item in about a minute. Choose to sell, swap or give it away.</p></div>
+<div class="step"><i>2</i><b>Chat</b><p>Message the seller or buyer inside the app to agree the details.</p></div>
+<div class="step"><i>3</i><b>Meet at school</b><p>Pick it up at the school gate. No delivery, no strangers.</p></div>
+<div class="step"><i>4</i><b>Pay or swap</b><p>Pay with M-Pesa, trade for something your child needs, or claim it free.</p></div></div></div></section>
+<section class="sec" id="why" style="padding-top:20px"><div class="wrap why"><div>
+<h2>Same school. Same gate. <span>Same trust.</span></h2>
+<ul><li><b>Verified sellers.</b> Schools can vouch for the families who sell.</li><li><b>M-Pesa payments.</b> It is already how Kenyan families pay.</li><li><b>Pickup at school.</b> No delivery costs and nothing to arrange.</li><li><b>Always something new.</b> Children outgrow things every term, so there is always something to list.</li></ul></div>
+<div class="rcpt"><div class="rh">STUDYSWAP</div><div class="dash">- - - - - - - - - - - - - -</div>
+<div class="rr"><span>Navy blazer</span><span>600</span></div><div class="rr"><span>Fee (<span data-v="fee"></span>)</span><span data-v="rfee"></span></div>
+<div class="dash">- - - - - - - - - - - - - -</div><div class="rr b"><span>TOTAL (KSh)</span><span data-v="rtot"></span></div><div class="rr"><span>Seller keeps</span><span>600</span></div>
+<div class="note">Example only. Minimum fee KSh 10.</div></div></div></section>
+<section class="sec" id="pricing" style="padding-top:20px"><div class="wrap"><h2>Simple pricing</h2><p class="lead" style="margin:0">Free to list and chat. We only earn when you do.</p>
+<div class="plans"><div class="plan"><h3>Free</h3><div class="pr">KSh 0 <small>to join</small></div>
+<ul><li><span data-ic="check"></span>List, chat, swap and donate</li><li><span data-ic="check"></span><span><span data-v="fee"></span> fee on each sale (min. KSh 10)</span></li><li><span data-ic="check"></span>Boost a listing for KSh 50</li><li><span data-ic="check"></span>Term-start bundles, 10% off</li></ul>
+<a class="cta alt" href="#try" onclick="goApp();return false">Try the app</a></div>
+<div class="plan pl2"><h3>StudySwap Plus</h3><div class="pr">KSh 199 <small>/ month</small></div><div class="mu" style="margin-bottom:0;font-size:13px;color:var(--mu)">or KSh 1,990 a year (2 months free)</div>
+<ul><li><span data-ic="check"></span><span>Fee drops to <span data-v="pfee"></span></span></li><li><span data-ic="check"></span>Unlimited free boosts</li><li><span data-ic="check"></span>Plus badge on your listings</li></ul>
+<button class="cta" onclick="tryPlus()">Try Plus in the demo</button></div></div></div></section>
+<section class="sec faq" id="faq" style="padding-top:20px"><div class="wrap"><h2>Questions</h2>
+<details open><summary>Is this live yet?</summary><p>Not quite. It is a working prototype, so M-Pesa payments and seller replies in the demo are simulated. Real payments come with launch.</p></details>
+<details><summary>Which schools can use it?</summary><p>We are starting with one school, then adding more. Pick your school at the top of the app.</p></details>
+<details><summary>Is it safe?</summary><p>Everyone is from the same school community, sellers can be school-verified, and every handover happens at school.</p></details>
+<details><summary>What can I list?</summary><p>Uniforms, textbooks, shoes, stationery and sports kit. Sell it, swap it, or give it away for free.</p></details>
+<details><summary>How does StudySwap make money?</summary><p>A small fee on each sale, optional boosts to show your item first, term-start bundles, and StudySwap Plus.</p></details></div></section>
+<section class="sec" style="padding-top:20px"><div class="wrap"><div class="endband"><h2>Got something your child has outgrown?</h2><a class="cta" href="#try" onclick="listNow();return false">List it now <span data-ic="arrow"></span></a></div></div></section>
+<footer class="sf"><div class="wrap"><span><b>StudySwap</b> &middot; Pass it on. Pick it up.</span><span>Prototype. Payments in the demo are simulated. &copy; 2026</span></div></footer>
+<script>
+const SCHOOLS=["Nairobi Academy","Moi Girls Nairobi","Alliance High","Starehe Boys","Kenya High"];
+const CATS=["All","Uniforms","Books","Shoes","Stationery","Sports"];
+const ICONS={
+book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+shirt:'<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>',
+shoe:'<path d="M2 17v-4a1 1 0 0 1 .8-1l4.2-1 2.5-4 2.5 1.5 5.5 1.5c2.4.7 4.5 2 4.5 4v3z"/><path d="M2 20h20"/>',
+pencil:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/><path d="m15 5 4 4"/>',
+trophy:'<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0z"/>',
+sparkles:'<path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
+cart:'<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
+swap:'<path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/>',
+gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>',
+search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+bag:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+plus:'<circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/>',
+msg:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+receipt:'<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>',
+badge:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+check:'<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+x:'<path d="M18 6 6 18M6 6l12 12"/>',
+send:'<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
+star:'<path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>',
+zap:'<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
+crown:'<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7z"/><path d="M5 20h14"/>',
+arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+moon:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>',
+heart:'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/>'};
+const CATIC={Uniforms:"shirt",Books:"book",Shoes:"shoe",Stationery:"pencil",Sports:"trophy"};
+const ic=(n,c="")=>`<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
+const em=c=>ic(CATIC[c]||"sparkles");
+const FEE=0.15,PLUSFEE=0.10,MINFEE=10;
+const pct=()=>Math.round((S.plus?PLUSFEE:FEE)*100);
+const seed=[
+{id:1,title:"Grade 6 Maths Textbook (CBC)",cat:"Books",type:"sell",price:350,cond:"Good",school:0,seller:"Mama Wanjiru",ver:1},
+{id:2,title:"Navy Blazer, size 32",cat:"Uniforms",type:"sell",price:600,cond:"Like new",school:0,seller:"Mr. Otieno",ver:1,feat:1,plus:1},
+{id:3,title:"Black School Shoes, size 5",cat:"Shoes",type:"swap",want:"Size 6 shoes",cond:"Fair",school:0,seller:"Amina K.",ver:0},
+{id:4,title:"Geometry Set + Calculator",cat:"Stationery",type:"donate",cond:"Good",school:0,seller:"Mrs. Achieng",ver:1},
+{id:5,title:"Form 2 Chemistry Revision Book",cat:"Books",type:"sell",price:400,cond:"Good",school:1,seller:"Faith M.",ver:1},
+{id:6,title:"PE Kit (shorts + tee), size M",cat:"Sports",type:"swap",want:"Size L kit",cond:"Good",school:0,seller:"Brian N.",ver:0},
+{id:7,title:"Grey Skirt, size 28",cat:"Uniforms",type:"donate",cond:"Fair",school:1,seller:"Mrs. Kamau",ver:1},
+{id:8,title:"Set of 6 Exercise Books",cat:"Stationery",type:"sell",price:150,cond:"New",school:2,seller:"Peter O.",ver:0},
+{id:9,title:"Geometry Set + Scientific Calculator",cat:"Stationery",type:"sell",price:450,cond:"Good",school:0,seller:"Mrs. Achieng",ver:1}];
+let S={items:seed,acts:[],chats:{},plus:null,open:null,school:0,cat:"All",type:"all",tab:"browse",q:""};
+try{const r=localStorage.getItem("ss1");if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+S.tab="browse";
+if(S.plus&&S.plus.until&&S.plus.until<Date.now())S.plus=null;
+seed.forEach(x=>{const y=S.items.find(z=>z.id===x.id);if(!y)S.items.push({...x});else if(x.feat&&y.feat===undefined)y.feat=1});
+const save=()=>{try{localStorage.setItem("ss1",JSON.stringify({items:S.items,acts:S.acts,chats:S.chats,plus:S.plus,phone:S.phone,school:S.school}))}catch(e){}};
+const $=s=>document.querySelector(s);
+const cd=c=>({New:"Brand new","Like new":"Like new",Good:"Still good",Fair:"Well loved"}[c]||c);
+const kes=n=>"KSh "+Math.round(n).toLocaleString();
+const fee=p=>Math.max(S.plus?5:MINFEE,Math.round(p*(S.plus?PLUSFEE:FEE)));
+const tagOf=i=>i.type==="sell"?`<span class="tag t-sell">${kes(i.price)}</span>`:i.type==="swap"?`<span class="tag t-swap">${ic("swap")} Swap</span>`:`<span class="tag t-donate">${ic("gift")} Free</span>`;
+function nav(){const t=[["browse","bag","Browse"],["sell","plus","Post"],["chats","msg","Chats"],["acts","receipt","My deals"]];
+$("#nav").innerHTML=t.map(([k,i,l])=>`<button class="${S.tab===k?"on":""}" onclick="S.tab='${k}';render()"><span>${ic(i)}</span>${l}</button>`).join("")}
+function render(){
+$("#school").innerHTML=SCHOOLS.map((s,i)=>`<option value="${i}" ${i===S.school?"selected":""}>${s}</option>`).join("");
+$("#q").parentNode.style.display=S.tab==="browse"?"":"none";nav();
+({browse,sell,acts,chats:chatList})[S.tab]();}
+function browse(){
+const q=S.q.toLowerCase();
+const list=S.items.filter(i=>i.school===S.school&&!i.gone&&(S.cat==="All"||i.cat===S.cat)&&(S.type==="all"||i.type===S.type)&&(!q||i.title.toLowerCase().includes(q))).sort((a,b)=>(b.feat?1:0)-(a.feat?1:0));
+const bd=(!q&&S.cat==="All"&&S.type==="all")?bundleCard():"";
+$("#main").innerHTML=`${bd}<div class="chips" style="padding-top:8px">${["all","sell","swap","donate"].map(t=>`<button class="chip ${S.type===t?"on":""}" onclick="S.type='${t}';render()">${{all:ic("sparkles")+" All",sell:ic("cart")+" For sale",swap:ic("swap")+" Swaps",donate:ic("gift")+" Free stuff"}[t]}</button>`).join("")}</div>
+<div class="chips" style="padding-top:0">${CATS.map(c=>`<button class="chip ${S.cat===c?"on":""}" onclick="S.cat='${c}';render()">${c==="All"?ic("sparkles"):em(c)} ${c}</button>`).join("")}</div>
+${list.length?`<div class="grid">${list.map(i=>`<div class="card${i.feat?" ft":""}" data-c="${i.cat}" onclick="detail(${i.id})"><div class="em"><i>${em(i.cat)}</i></div><b>${i.title}</b><div class="mu">${cd(i.cond)} · ${esc(i.seller)}${i.ver?" "+ic("badge","v"):""}${i.plus?" "+ic("crown","pl"):""}</div><div class="price">${tagOf(i)}${i.feat?` <span class="tag t-feat">${ic("star")} Featured</span>`:""}</div></div>`).join("")}</div>`:`<div class="empty"><i>${ic("search")}</i>Nothing here yet.<br>Be the first to share something at ${SCHOOLS[S.school]}. Your neighbours will thank you!</div>`}`}
+function sell(){
+$("#main").innerHTML=`<h3 style="margin:12px 0 2px">What are you passing on?</h3><div class="mu">Someone at ${SCHOOLS[S.school]} is probably looking for it. This takes about a minute.</div>
+<label>What is it?</label><input id="f_t" placeholder="e.g. Grade 5 English textbook, barely used" maxlength="60">
+<div class="row"><div style="flex:1"><label>What kind of thing?</label><select id="f_c">${CATS.slice(1).map(c=>`<option>${c}</option>`).join("")}</select></div>
+<div style="flex:1"><label>How's it looking?</label><select id="f_d"><option value="New">Brand new</option><option value="Like new">Like new</option><option value="Good" selected>Still good</option><option value="Fair">Well loved</option></select></div></div>
+<label>What would you like to do with it?</label><select id="f_y" onchange="ft()"><option value="sell">Sell it</option><option value="swap">Swap it</option><option value="donate">Give it away</option></select>
+<div id="s_sell"><label>Your price (KSh)</label><input id="f_p" type="text" inputmode="numeric" autocomplete="off" placeholder="e.g. 300" oninput="pp()">
+<div class="mu" id="f_n" style="margin-top:5px">Not sure? Used items usually go for about half the shop price.</div>
+<label>Your M-Pesa number (so we can pay you)</label><input id="f_ph" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 0712 345 678" value="${esc(S.phone||"")}"><div class="mu" style="margin-top:5px">Only used to send you your money. We never show it to buyers.</div></div>
+<div id="s_swap" style="display:none"><label>What would you love in return?</label><input id="f_w" placeholder="e.g. Size 6 shoes, or a Grade 6 maths book"></div>
+<div id="s_don" style="display:none"><div class="sum">${ic("heart","v")} Lovely! Another family will really appreciate this.</div></div>
+<label>What should buyers call you?</label><input id="f_s" placeholder="e.g. Mama Wanjiru" maxlength="30">
+<label class="chk"><input type="checkbox" id="f_b">${ic("zap")} Boost it ${S.plus?"for free (Plus)":"for KSh 50"} so it shows first</label>
+<div id="f_e" style="color:var(--pk);font-weight:600;margin-top:10px;min-height:20px"></div>
+<button class="btn" style="margin-top:4px" onclick="post()">Put it up for others</button>`}
+function ft(){const y=$("#f_y").value;$("#s_sell").style.display=y==="sell"?"":"none";$("#s_swap").style.display=y==="swap"?"":"none";$("#s_don").style.display=y==="donate"?"":"none"}
+function pp(){const e=$("#f_p");e.value=e.value.replace(/\D/g,"").slice(0,6);const p=+e.value;
+$("#f_n").textContent=p?`You'll get ${kes(p)}. The buyer pays a ${kes(fee(p))} fee on top, so it never comes out of your pocket.`:"Not sure? Used items usually go for about half the shop price."}
+function toast(m){const d=document.createElement("div");d.className="toast";d.textContent=m;$("#phone").appendChild(d);setTimeout(()=>d.remove(),3000)}
+function post(){const t=$("#f_t").value.trim(),y=$("#f_y").value,er=m=>{$("#f_e").textContent=m};
+if(!t){er("Give your item a name so people know what it is");$("#f_t").focus();return}
+const it={id:Date.now(),title:t,cat:$("#f_c").value,cond:$("#f_d").value,type:y,school:S.school,seller:$("#f_s").value.trim()||"A parent",ver:0,mine:1,plus:S.plus?1:0};
+if(y==="sell"){const p=parseInt($("#f_p").value,10);if(!p){er("How much would you like for it? Even a rough number helps");$("#f_p").focus();return}const ph=normPhone($("#f_ph").value);if(!ph){er("Add the M-Pesa number we should pay you on, like 0712 345 678");$("#f_ph").focus();return}it.price=p;it.payPhone=ph;S.phone=$("#f_ph").value.trim()}
+if(y==="swap")it.want=$("#f_w").value.trim()||"Anything similar";
+const wb=$("#f_b").checked;if(wb&&S.plus){it.feat=1;S.acts.unshift({t:"Boost: "+t,ty:"boost",amt:0,fee:0,d:new Date().toLocaleDateString()})}
+S.items.unshift(it);S.cat="All";S.type="all";S.q="";$("#q").value="";save();S.tab="browse";render();boom();toast("Posted! Your item is live at "+SCHOOLS[S.school]);if(wb&&!S.plus)setTimeout(()=>boost(it.id),500)}
+function detail(id){const i=S.items.find(x=>x.id===id);let act="";
+if(i.mine){act=`<div class="sum">This one's yours. Everyone at your school can see it.</div>${i.feat?`<div class="sum"><span class="tag t-feat">${ic("star")} Featured</span> It shows at the top of Browse.</div>`:`<div class="sum"><div style="display:block"><b>Want it seen first?</b><div class="mu">Boost it ${S.plus?"for free with Plus":"for KSh 50"} and it shows at the top of Browse.</div></div></div><button class="btn" onclick="boost(${id})">${ic("zap")} ${S.plus?"Boost for free":"Boost for KSh 50"}</button>`}<button class="btn alt" onclick="rm(${id})">Take it down</button>`}
+else if(i.type==="sell"){const f=fee(i.price);act=`<div class="sum"><div><span>Item</span><span>${kes(i.price)}</span></div><div><span>StudySwap fee (${pct()}%)</span><span>${kes(f)}</span></div><div><b>Total</b><b>${kes(i.price+f)}</b></div></div><button class="btn" onclick="conf(${id})">Pay with M-Pesa</button>`}
+else if(i.type==="swap")act=`<div class="sum"><div><span>Looking for</span><span>${i.want}</span></div></div><button class="btn" onclick="conf(${id})">Offer a swap</button>`;
+else act=`<button class="btn" onclick="conf(${id})">I'd love this!</button>`;
+$("#panel").innerHTML=`<div data-c="${i.cat}"><div class="em" style="font-size:60px">${em(i.cat)}</div></div><h3 style="margin:0">${i.title}</h3>
+<div class="mu" style="margin:4px 0 8px">${i.cat} · ${cd(i.cond)} · ${SCHOOLS[i.school]}</div>
+<div>${tagOf(i)} ${i.ver?'<span class="tag t-sell">'+ic("badge")+' Verified by the school</span>':""}</div>
+<div class="mu" style="margin-top:8px">Posted by ${esc(i.seller)}. You'll pick it up at the school gate or front office, so there's no delivery to sort out.</div>${act}${i.mine?"":`<button class="btn alt" onclick="chat(${id})">${ic("msg")} Message ${esc(i.seller)}</button>`}
+<button class="btn alt" onclick="closeS()">Not now</button>`;$("#sheet").classList.add("show")}
+function conf(id){const i=S.items.find(x=>x.id===id);if(i.type==="sell")return payFlow(i.price+fee(i.price),i.title,rc=>finish(id,rc));finish(id)}
+function finish(id,rc){const i=S.items.find(x=>x.id===id);i.gone=1;
+S.acts.unshift({t:i.title,ty:i.type,amt:i.type==="sell"?i.price+fee(i.price):0,fee:i.type==="sell"?fee(i.price):0,rc,d:new Date().toLocaleDateString()});save();boom();
+$("#panel").innerHTML=`<div class="big"><i>${ic("check")}</i><h3>${i.type==="sell"?"You're all set":i.type==="swap"?"Offer sent":"It's yours"}!</h3><div class="mu">${i.type==="swap"?"We've told the seller. We'll let you know when they reply.":`Pick up "${i.title}" at ${SCHOOLS[i.school]}. We've let the seller know.`}</div></div><button class="btn" onclick="closeS();render()">Yay, thanks!</button>`}
+function boom(){const c=["#ff5c8a","#10a36b","#ffb703","#3b5bdb","#9b5de5"];for(let k=0;k<40;k++){const d=document.createElement("i");d.className="cf";d.style.cssText=`left:${Math.random()*100}%;background:${c[k%5]};animation-delay:${Math.random()*.4}s;rotate:${Math.random()*360}deg`;$("#phone").appendChild(d);setTimeout(()=>d.remove(),2600)}}
+function bundle(){const seen={},it=[];S.items.filter(i=>i.school===S.school&&!i.gone&&i.type==="sell"&&!i.mine).forEach(i=>{if(!seen[i.cat]&&it.length<3){seen[i.cat]=1;it.push(i)}});
+if(it.length<2)return null;const sum=it.reduce((a,i)=>a+i.price,0),bp=Math.round(sum*.9/10)*10;return{it,sum,bp,fee:fee(bp)}}
+function bundleCard(){const b=bundle();if(!b)return"";
+return `<div class="bundle"><div class="bt">${ic("bag")} Term-start bundle <span class="tag t-feat">Save 10%</span></div><div class="mu" style="margin:4px 0 10px">${b.it.map(i=>esc(i.title)).join(" + ")}</div><div style="display:flex;align-items:center;gap:10px"><div class="price" style="margin:0;font-size:20px;font-weight:700">${kes(b.bp)} <s class="mu">${kes(b.sum)}</s></div><button class="btn" style="margin:0 0 0 auto;width:auto;padding:10px 18px" onclick="bdetail()">See bundle</button></div></div>`}
+function bdetail(){const b=bundle();if(!b){closeS();render();return}
+$("#panel").innerHTML=`<h3 style="margin:0 0 4px">Term-start bundle</h3><div class="mu">Get set for the new term in one go, with 10% off. You pick up each item at school.</div>
+<div class="sum">${b.it.map(i=>`<div><span>${esc(i.title)}</span><span>${kes(i.price)}</span></div>`).join("")}<div><span>Bundle discount (10%)</span><span>- ${kes(b.sum-b.bp)}</span></div><div><span>StudySwap fee (${pct()}%)</span><span>${kes(b.fee)}</span></div><div><b>Total</b><b>${kes(b.bp+b.fee)}</b></div></div>
+<button class="btn" onclick="bconf()">Pay with M-Pesa</button><button class="btn alt" onclick="closeS()">Not now</button>`;$("#sheet").classList.add("show")}
+const normPhone=v=>{const r=String(v).replace(/\D/g,"").replace(/^0/,"254").replace(/^([17]\d{8})$/,"254$1");return /^254[17]\d{8}$/.test(r)?r:null};
+let LIVE=false,PAY=null;
+fetch("/api/health").then(r=>r.ok?r.json():null).then(j=>{LIVE=!!(j&&j.ok)}).catch(()=>{});
+function payFlow(amount,label,onPaid){PAY={amount,label,onPaid,cancelled:false};
+$("#panel").innerHTML=`<h3 style="margin:0 0 4px">Pay with M-Pesa</h3><div class="mu">${esc(label)}</div><div class="sum"><div><b>Total</b><b>${kes(amount)}</b></div></div>
+<label>M-Pesa phone number</label><input id="pp_ph" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 0712 345 678" value="${esc(S.phone||"")}">
+<div id="pp_e" style="color:var(--pk);font-weight:600;margin-top:8px;min-height:20px"></div>
+<button class="btn" style="margin-top:2px" onclick="payGo()">Send M-Pesa prompt</button><button class="btn alt" onclick="closeS()">Not now</button>${LIVE?"":'<div class="mu" style="text-align:center;margin-top:8px">Demo mode: no real money moves.</div>'}`;
+$("#sheet").classList.add("show")}
+function payWait(m){$("#panel").innerHTML=`<div class="big"><i>${ic("send")}</i><h3>Check your phone</h3><div class="mu">${m}</div></div><button class="btn alt" onclick="closeS()">Cancel</button>`}
+function payFail(m){$("#panel").innerHTML=`<div class="big"><i>${ic("x")}</i><h3>Payment didn't go through</h3><div class="mu">${esc(m)}</div></div><button class="btn" onclick="payFlow(PAY.amount,PAY.label,PAY.onPaid)">Try again</button><button class="btn alt" onclick="closeS()">Close</button>`}
+async function payGo(){const raw=$("#pp_ph").value.replace(/\D/g,"");const ph=raw.replace(/^0/,"254").replace(/^([17]\d{8})$/,"254$1");
+if(!/^254[17]\d{8}$/.test(ph)){$("#pp_e").textContent="Enter a Safaricom number like 0712 345 678";return}
+S.phone=$("#pp_ph").value.trim();save();const P=PAY;
+payWait(`Enter your M-Pesa PIN to pay ${kes(P.amount)}. This page updates by itself.`);
+if(!LIVE){setTimeout(()=>{if(!P.cancelled)P.onPaid("DEMO"+Math.random().toString(36).slice(2,8).toUpperCase())},2500);return}
+try{const r=await fetch("/api/pay/stk",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:ph,amount:P.amount,desc:P.label})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Could not start the payment");payPoll(P,j.checkoutId,0)}catch(e){if(!P.cancelled)payFail(e.message)}}
+async function payPoll(P,id,n){if(P.cancelled)return;try{const j=await(await fetch("/api/pay/status/"+id)).json();if(j.status==="paid")return P.onPaid(j.receipt);if(j.status==="failed")return payFail(j.reason||"The payment was cancelled")}catch(e){}
+if(n>45)return payFail("We didn't get a confirmation. If M-Pesa took your money, keep the SMS and contact us.");setTimeout(()=>payPoll(P,id,n+1),3000)}
+function done(h,m){boom();$("#panel").innerHTML=`<div class="big"><i>${ic("check")}</i><h3>${h}</h3><div class="mu">${m}</div></div><button class="btn" onclick="closeS();render()">Yay, thanks!</button>`}
+function bconf(){const b=bundle();if(!b)return;payFlow(b.bp+b.fee,"Term-start bundle",rc=>bfin(rc))}
+function bfin(rc){const b=bundle();if(!b)return;b.it.forEach(i=>i.gone=1);S.acts.unshift({t:"Term-start bundle ("+b.it.length+" items)",ty:"sell",amt:b.bp+b.fee,fee:b.fee,rc,d:new Date().toLocaleDateString()});save();done("Bundle bought!","Pick up each item at "+SCHOOLS[S.school]+". We've let the sellers know.")}
+function boost(id){const i=S.items.find(x=>x.id===id);if(S.plus)return bdone(id);payFlow(50,"Boost: "+i.title,rc=>bdone(id,rc))}
+function bdone(id,rc){const i=S.items.find(x=>x.id===id);i.feat=1;S.acts.unshift({t:"Boost: "+i.title,ty:"boost",amt:S.plus?0:50,fee:S.plus?0:50,rc,d:new Date().toLocaleDateString()});save();done("Boosted!","Your item now shows at the top of Browse."+(S.plus?"":`<br><br>Boosting a lot? Plus makes boosts free and cuts your fees.<button class="btn alt" onclick="plusSheet()">See StudySwap Plus</button>`))}
+const PERKS=[`Fee drops from ${Math.round(FEE*100)}% to ${Math.round(PLUSFEE*100)}%`,"Unlimited free boosts","Plus badge on your listings"];
+function plusCard(){if(S.plus)return `<div class="plus"><div class="bt">${ic("crown")} You're on StudySwap Plus <span class="tag t-feat">${S.plus.plan==="year"?"Yearly":"Monthly"}</span></div><div class="mu" style="margin-top:6px">Fees are ${Math.round(PLUSFEE*100)}% and boosts are free. Thanks for backing StudySwap.</div><button class="btn alt" style="margin-top:10px" onclick="cancelPlus()">Cancel Plus</button></div>`;
+return `<div class="plus"><div class="bt">${ic("crown")} StudySwap Plus <span class="tag t-feat">KSh 199/month</span></div><ul>${PERKS.map(x=>`<li>${x}</li>`).join("")}</ul><button class="btn" onclick="plusSheet()">Get Plus</button></div>`}
+function plusSheet(){$("#panel").innerHTML=`<h3 style="margin:0 0 4px">StudySwap Plus</h3><div class="mu">For families who buy and sell a lot.</div>
+<div class="sum">${PERKS.map(x=>`<div style="justify-content:flex-start;gap:8px">${ic("check","v")} ${x}</div>`).join("")}</div>
+<button class="btn" onclick="subscribe('month')">Go monthly: KSh 199</button>
+<button class="btn alt" onclick="subscribe('year')">Go yearly: KSh 1,990 (2 months free)</button>
+<div class="mu" style="text-align:center;margin-top:6px">Pay once for the period and renew whenever you like.</div>
+<button class="btn alt" onclick="closeS()">Not now</button>`;$("#sheet").classList.add("show")}
+function subscribe(plan){payFlow(plan==="year"?1990:199,"StudySwap Plus ("+plan+")",rc=>subdone(plan,rc))}
+function subdone(plan,rc){const pr=plan==="year"?1990:199;S.plus={plan,since:new Date().toLocaleDateString(),until:Date.now()+(plan==="year"?365:30)*864e5};
+S.acts.unshift({t:"StudySwap Plus ("+(plan==="year"?"yearly":"monthly")+")",ty:"plus",amt:pr,fee:pr,rc,d:new Date().toLocaleDateString()});save();done("Welcome to Plus!","Your fee is now "+Math.round(PLUSFEE*100)+"% and boosts are free.")}
+function cancelPlus(){if(confirm("Cancel StudySwap Plus? Fees go back to "+Math.round(FEE*100)+"% and boosts cost KSh 50.")){S.plus=null;save();render()}}
+function rm(id){S.items=S.items.filter(x=>x.id!==id);save();closeS();render()}
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function closeS(){if(PAY)PAY.cancelled=true;$("#sheet").classList.remove("show");S.open=null;if(S.tab==="chats")render()}
+function chat(id){const i=S.items.find(x=>x.id===id);S.open=id;
+$("#panel").innerHTML=`<div style="display:flex;align-items:center;gap:10px"><div class="em" style="padding:6px 12px;margin:0;font-size:26px">${em(i.cat)}</div><div style="flex:1;min-width:0"><b>${esc(i.seller)}${i.ver?" "+ic("badge","v"):""}</b><div class="mu">${esc(i.title)}</div></div><button class="chip" onclick="closeS()" aria-label="Close">${ic("x")}</button></div>
+<div class="msgs" id="msgs"></div>
+<div class="chips">${["Is it still available?","Can you do a lower price?","Can we meet at the school gate?"].map(q=>`<button class="chip" onclick="send(${id},this.textContent)">${q}</button>`).join("")}</div>
+<div class="row"><input id="ci" placeholder="Write a message…" onkeydown="if(event.key==='Enter')send(${id})"><button class="btn" style="width:auto;margin:0;padding:0 18px" onclick="send(${id})" aria-label="Send">${ic("send")}</button></div>
+<div class="mu" style="text-align:center;margin-top:8px">Demo mode: replies are automated for now. Always meet at school, never anywhere else</div>`;
+$("#sheet").classList.add("show");drawMsgs(id)}
+function drawMsgs(id){const m=$("#msgs");if(!m||S.open!==id)return;const t=S.chats[id]||[];
+m.innerHTML=t.length?t.map(x=>`<div class="b ${x.me?"me":"them"}">${esc(x.t)}</div>`).join(""):'<div class="empty" style="padding:20px 0"><i>'+ic("msg")+'</i>Say hi! Ask anything about the item.</div>';m.scrollTop=m.scrollHeight}
+function send(id,txt){const el=$("#ci");const t=(txt||(el&&el.value)||"").trim();if(!t)return;if(el)el.value="";
+(S.chats[id]=S.chats[id]||[]).push({me:1,t});save();drawMsgs(id);
+setTimeout(()=>{const i=S.items.find(x=>x.id===id),l=t.toLowerCase();let r="Sounds good! When can you collect it?";
+if(/still|available/.test(l))r="Yes, still here! Want to grab it?";
+else if(/price|lower|cheap|discount/.test(l))r=i.price?`I could do ${kes(Math.round(i.price*.9/10)*10)}. Would that work for you?`:"It's free or a swap, so no haggling needed";
+else if(/meet|where|gate|pickup|collect/.test(l))r="Sure! The school gate after classes works for me";
+else if(/\b(hi|hello|hey)\b/.test(l))r="Hi there! Are you interested?";
+S.chats[id].push({me:0,t:r});save();drawMsgs(id)},1100)}
+function chatList(){const ids=Object.keys(S.chats).filter(k=>S.chats[k].length);
+$("#main").innerHTML=`<h3 style="margin:12px 0 0">Your messages</h3>`+(ids.length?ids.map(k=>{const i=S.items.find(x=>x.id==k);if(!i)return"";const l=S.chats[k].slice(-1)[0];
+return `<div class="sum th" onclick="chat(${i.id})" style="cursor:pointer"><div class="em" style="padding:6px 12px;margin:0;font-size:24px">${em(i.cat)}</div><div style="flex:1;min-width:0"><b>${esc(i.seller)}</b><div class="mu" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${l.me?"You: ":""}${esc(l.t)}</div></div></div>`}).join(""):`<div class="empty"><i>${ic("msg")}</i>No messages yet. Open something you like and say hi.</div>`)}
+function acts(){const sp=S.acts.reduce((a,x)=>a+x.amt,0),fe=S.acts.reduce((a,x)=>a+x.fee,0),dn=S.acts.filter(x=>x.ty==="donate").length;
+$("#main").innerHTML=`<h3 style="margin:12px 0 0">Your StudySwap story</h3>${plusCard()}<div class="stats"><div><b>${S.acts.length}</b><span class="mu">Deals done</span></div><div><b>${kes(sp)}</b><span class="mu">Spent</span></div><div><b>${dn}</b><span class="mu">Free finds</span></div></div>
+<div class="mu">StudySwap fees so far: <span class="ok">${kes(fe)}</span> (this keeps the app running)</div>
+${S.acts.length?S.acts.map(a=>`<div class="sum"><div><b>${a.t}</b><span>${a.amt?kes(a.amt):a.ty==="swap"?"Swap":"Free"}</span></div><div class="mu"><span>${a.d}${a.rc?" · M-Pesa "+esc(a.rc):""}</span></div></div>`).join(""):`<div class="empty"><i>${ic("bag")}</i>Nothing here yet. Go find your first treasure!</div>`}
+<button class="btn alt" onclick="if(confirm('Start fresh? Your deals and messages will be cleared.')){S.items=seed.map(x=>({...x}));S.acts=[];S.chats={};S.plus=null;save();render()}">Start fresh</button>`}
+$("#school").onchange=e=>{S.school=+e.target.value;save();render()};
+$("#q").oninput=e=>{S.q=e.target.value;browse()};
+$("#sheet").onclick=e=>{if(e.target.id==="sheet")closeS()};
+$("#si").innerHTML=ic("search");
+const isDark=()=>document.documentElement.dataset.theme==="dark";
+function setTheme(t,keep){document.documentElement.dataset.theme=t;$("#tg").innerHTML=ic(t==="dark"?"sun":"moon");$("#tg").title=t==="dark"?"Switch to light mode":"Switch to dark mode";if(keep){try{localStorage.setItem("ss_theme",t)}catch(e){}}}
+let th=null;try{th=localStorage.getItem("ss_theme")}catch(e){}
+setTheme(th||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+$("#tg").onclick=()=>setTheme(isDark()?"light":"dark",1);
+render();
+document.querySelectorAll("[data-ic]").forEach(e=>e.innerHTML=ic(e.dataset.ic));
+(()=>{const r=Math.max(MINFEE,Math.round(600*FEE)),V={fee:Math.round(FEE*100)+"%",pfee:Math.round(PLUSFEE*100)+"%",rfee:r,rtot:600+r};document.querySelectorAll("[data-v]").forEach(e=>e.textContent=V[e.dataset.v])})();
+function goApp(){$("#phone").scrollIntoView({behavior:"smooth",block:"center"})}
+function tryPlus(){S.tab="acts";render();goApp();setTimeout(plusSheet,600)}
+function listNow(){S.tab="sell";render();goApp()}
+</script></body></html>
